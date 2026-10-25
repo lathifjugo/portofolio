@@ -26,9 +26,9 @@
             --accent-yellow-light: #FFF8C4;
             --accent-dark: #111111;
             --border: #EAEAEA;
-            --nav-width: 220px;      /* lebar navbar kanan (desktop) */
-            --nav-width-mobile: 180px; /* lebar navbar kanan (mobile) */
-            --content-max: 1180px;   /* max-width konten untuk laptop/komputer */
+            --nav-width: 220px;          /* lebar navbar kanan (desktop) */
+            --nav-width-mobile: 200px;   /* lebar navbar kanan (mobile) */
+            --content-max: 1180px;       /* max-width konten untuk laptop/komputer */
         }
 
         html {
@@ -42,8 +42,9 @@
             line-height: 1.7;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            /* ruang di kanan agar konten tidak tertutup navbar kanan */
+            /* ruang di kanan agar konten tidak tertutup navbar kanan (desktop) */
             padding-right: var(--nav-width);
+            transition: padding-right 0.35s ease;
         }
 
         a { text-decoration: none; color: inherit; }
@@ -83,7 +84,65 @@
         }
 
         /* ============================================================
-           NAVBAR KANAN (Vertical Side Nav) — Selalu Tampil
+           TOMBOL HAMBURGER (hanya tampil di mobile)
+           ============================================================ */
+        .nav-toggle {
+            display: none; /* default: tidak tampil di desktop */
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            z-index: 10001;
+            width: 46px;
+            height: 46px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: var(--surface);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 5px;
+            padding: 0;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: var(--text-main);
+            border-radius: 2px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        /* State aktif (menu terbuka) -> membentuk ikon X */
+        .nav-toggle.active span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        .nav-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .nav-toggle.active span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        /* Overlay gelap saat menu terbuka di mobile */
+        .nav-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .nav-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* ============================================================
+           NAVBAR KANAN (Vertical Side Nav) — Selalu Tampil di Desktop
            ============================================================ */
         nav {
             position: fixed;
@@ -101,6 +160,7 @@
             align-items: stretch;
             z-index: 9999;
             box-shadow: -10px 0 30px rgba(0,0,0,0.04);
+            transition: transform 0.35s ease;
         }
 
         .nav-top {
@@ -804,7 +864,6 @@
 
         /* ============================================================
            RESPONSIVE — TABLET (≤ 1100px)
-           Navbar tetap di kanan, hanya mengecil
            ============================================================ */
         @media (max-width: 1100px) {
             :root {
@@ -850,16 +909,39 @@
 
         /* ============================================================
            RESPONSIVE — MOBILE (≤ 768px)
-           Navbar tetap vertikal di kanan, konten menyesuaikan
+           Navbar kanan jadi drawer (bisa dibuka/ditutup via hamburger)
            ============================================================ */
         @media (max-width: 768px) {
+            /* Konten full width, tidak diberi ruang navbar */
             body {
-                padding-right: var(--nav-width-mobile);
+                padding-right: 0;
             }
 
+            /* Tampilkan tombol hamburger */
+            .nav-toggle {
+                display: flex;
+            }
+
+            /* Overlay */
+            .nav-overlay {
+                display: block;
+                pointer-events: none;
+            }
+            .nav-overlay.active {
+                pointer-events: auto;
+            }
+
+            /* Navbar jadi drawer tersembunyi di kanan */
             nav {
                 width: var(--nav-width-mobile);
-                padding: 1.25rem 0.9rem;
+                padding: 4.5rem 1rem 1.25rem; /* ruang atas untuk hamburger */
+                transform: translateX(100%);
+                box-shadow: -20px 0 40px rgba(0,0,0,0.15);
+            }
+
+            /* Saat aktif: muncul dari kanan */
+            nav.open {
+                transform: translateX(0);
             }
 
             .nav-top {
@@ -875,20 +957,20 @@
             }
 
             .nav-links a {
-                font-size: 0.78rem;
-                padding: 0.5rem 0.55rem;
+                font-size: 0.85rem;
+                padding: 0.6rem 0.7rem;
             }
 
             .nav-btn {
-                padding: 9px 10px;
-                font-size: 0.72rem;
+                padding: 10px 14px;
+                font-size: 0.78rem;
             }
 
             /* HERO */
             .hero {
                 flex-direction: column;
                 text-align: center;
-                padding: 60px 1.25rem 50px;
+                padding: 90px 1.25rem 50px; /* ruang atas untuk hamburger */
                 gap: 2rem;
                 min-height: auto;
             }
@@ -1094,11 +1176,10 @@
 
         /* ============================================================
            RESPONSIVE — MOBILE KECIL (≤ 480px)
-           Navbar sedikit lebih ramping
            ============================================================ */
         @media (max-width: 480px) {
             :root {
-                --nav-width-mobile: 150px;
+                --nav-width-mobile: 180px;
             }
 
             .hero-stats {
@@ -1130,7 +1211,20 @@
     <div class="blob-shape blob-2"></div>
 
     <!-- ============================================================
-         NAVBAR KANAN (Vertical Side Nav) — Selalu Tampil
+         TOMBOL HAMBURGER (hanya tampil di mobile)
+         ============================================================ -->
+    <button class="nav-toggle" id="navToggle" aria-label="Buka menu" aria-expanded="false" aria-controls="navbar">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- Overlay gelap saat menu terbuka di mobile -->
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <!-- ============================================================
+         NAVBAR KANAN (Vertical Side Nav)
+         Desktop: selalu tampil | Mobile: drawer (buka/tutup)
          ============================================================ -->
     <nav id="navbar">
         <div class="nav-top">
@@ -1427,6 +1521,61 @@
         }, { threshold: 0.4 });
 
         sections.forEach(sec => sectionObserver.observe(sec));
+
+        /* ---------- Drawer Menu Mobile (Hamburger) ---------- */
+        const navToggle = document.getElementById('navToggle');
+        const navOverlay = document.getElementById('navOverlay');
+        const navbar = document.getElementById('navbar');
+
+        function openMenu() {
+            navbar.classList.add('open');
+            navOverlay.classList.add('active');
+            navToggle.classList.add('active');
+            navToggle.setAttribute('aria-expanded', 'true');
+            navToggle.setAttribute('aria-label', 'Tutup menu');
+            document.body.style.overflow = 'hidden'; // cegah scroll latar
+        }
+
+        function closeMenu() {
+            navbar.classList.remove('open');
+            navOverlay.classList.remove('active');
+            navToggle.classList.remove('active');
+            navToggle.setAttribute('aria-expanded', 'false');
+            navToggle.setAttribute('aria-label', 'Buka menu');
+            document.body.style.overflow = '';
+        }
+
+        navToggle.addEventListener('click', () => {
+            if (navbar.classList.contains('open')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
+        // Tutup menu saat overlay diklik
+        navOverlay.addEventListener('click', closeMenu);
+
+        // Tutup menu saat salah satu link navbar diklik
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) closeMenu();
+            });
+        });
+
+        // Tutup menu dengan tombol Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navbar.classList.contains('open')) {
+                closeMenu();
+            }
+        });
+
+        // Reset state jika layar diperbesar ke desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                closeMenu();
+            }
+        });
     </script>
 
 </body>
