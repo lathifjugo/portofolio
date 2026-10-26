@@ -238,46 +238,108 @@
         }
 
         /* ============================================================
-           PHOTO GALLERY (2 FOTO BERDAMPINGAN)
+           PHOTO SLIDER
            ============================================================ */
-        .activity-photos {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            align-items: stretch;
-        }
-
-        .activity-photo {
+        .activity-slider {
             position: relative;
-            border-radius: 18px;
+            border-radius: 22px;
             overflow: hidden;
             aspect-ratio: 4 / 3;
             background: var(--border);
             box-shadow:
-                0 8px 20px rgba(0, 0, 0, 0.08),
-                0 0 0 4px rgba(255, 255, 255, 0.9),
-                0 0 0 6px rgba(255, 214, 0, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+                0 10px 25px rgba(0, 0, 0, 0.08),
+                0 0 0 5px rgba(255, 255, 255, 0.9),
+                0 0 0 7px rgba(255, 214, 0, 0.3);
         }
 
-        .activity-photo:hover {
-            transform: translateY(-4px);
-            box-shadow:
-                0 14px 28px rgba(0, 0, 0, 0.12),
-                0 0 0 4px rgba(255, 255, 255, 0.9),
-                0 0 0 6px rgba(255, 214, 0, 0.5);
+        .slider-track {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
         }
 
-        .activity-photo img {
-            width: 100%; height: 100%;
+        .slide {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.5s ease;
         }
 
-        .activity-photo:hover img {
-            transform: scale(1.06);
+        /* Tombol Navigasi */
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.92);
+            color: var(--text-main);
+            font-size: 1.15rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+            transition: background 0.25s, transform 0.25s, opacity 0.25s;
+            opacity: 0;
+            z-index: 5;
         }
+
+        .activity-slider:hover .slider-btn { opacity: 1; }
+
+        .slider-btn:hover {
+            background: var(--accent-yellow);
+            transform: translateY(-50%) scale(1.08);
+        }
+
+        .slider-btn.prev { left: 14px; }
+        .slider-btn.next { right: 14px; }
+
+        /* Indikator Dot */
+        .slider-dots {
+            position: absolute;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            padding: 6px 12px;
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(6px);
+            border-radius: 50px;
+            z-index: 5;
+        }
+
+        .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.55);
+            cursor: pointer;
+            transition: background 0.25s, transform 0.25s, width 0.25s;
+            padding: 0;
+        }
+
+        .dot.active {
+            background: var(--accent-yellow);
+            width: 22px;
+            border-radius: 20px;
+            transform: scale(1);
+        }
+
+        .dot:hover { background: var(--accent-yellow); }
 
         /* ============================================================
            FOOTER
@@ -338,19 +400,15 @@
                 gap: 2rem;
                 padding: 2rem;
             }
-            .activity-photos { order: -1; }
-        }
-
-        @media (max-width: 600px) {
-            .activity-photos {
-                grid-template-columns: 1fr;
-            }
+            .activity-slider { order: -1; }
         }
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .nav-btn { padding: 8px 16px; font-size: 0.75rem; }
             .page-header, .activity-list { padding-left: 1.5rem; padding-right: 1.5rem; }
+
+            .slider-btn { opacity: 1; width: 36px; height: 36px; font-size: 1rem; }
         }
     </style>
 </head>
@@ -403,12 +461,24 @@
                     <li>Menyimpan riwayat transaksi penyewaan.</li>
                 </ul>
             </div>
-            <div class="activity-photos">
-                <div class="activity-photo">
-                    <img src="Dutrans Rental.png" alt="Aplikasi Rental Mobil">
+
+            <!-- SLIDER FOTO -->
+            <div class="activity-slider" id="rentalSlider">
+                <div class="slider-track">
+                    <div class="slide">
+                        <img src="Dutrans Rental.png" alt="Aplikasi Rental Mobil">
+                    </div>
+                    <div class="slide">
+                        <img src="dutrans.jpeg" alt="Dokumentasi Rental Mobil">
+                    </div>
                 </div>
-                <div class="activity-photo">
-                    <img src="dutrans.jpeg" alt="Dokumentasi Rental Mobil">
+
+                <button class="slider-btn prev" aria-label="Foto sebelumnya">‹</button>
+                <button class="slider-btn next" aria-label="Foto berikutnya">›</button>
+
+                <div class="slider-dots">
+                    <button class="dot active" aria-label="Foto 1"></button>
+                    <button class="dot" aria-label="Foto 2"></button>
                 </div>
             </div>
         </div>
@@ -427,6 +497,7 @@
          SCRIPTS
          ============================================================ -->
     <script>
+        /* ---------- Scroll Reveal ---------- */
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
@@ -441,6 +512,64 @@
         document.querySelectorAll('.activity-list .activity-row').forEach((el, i) => {
             el.style.transitionDelay = `${i * 0.12}s`;
         });
+
+        /* ---------- Slider ---------- */
+        (function () {
+            const slider = document.getElementById('rentalSlider');
+            if (!slider) return;
+
+            const track = slider.querySelector('.slider-track');
+            const slides = slider.querySelectorAll('.slide');
+            const dots = slider.querySelectorAll('.dot');
+            const prevBtn = slider.querySelector('.prev');
+            const nextBtn = slider.querySelector('.next');
+            const total = slides.length;
+            let index = 0;
+
+            function goTo(i) {
+                index = (i + total) % total;
+                track.style.transform = `translateX(-${index * 100}%)`;
+                dots.forEach((d, k) => d.classList.toggle('active', k === index));
+            }
+
+            nextBtn.addEventListener('click', () => goTo(index + 1));
+            prevBtn.addEventListener('click', () => goTo(index - 1));
+            dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+
+            /* Auto slide (opsional, hapus jika tidak perlu) */
+            let auto = setInterval(() => goTo(index + 1), 6000);
+            slider.addEventListener('mouseenter', () => clearInterval(auto));
+            slider.addEventListener('mouseleave', () => {
+                auto = setInterval(() => goTo(index + 1), 6000);
+            });
+
+            /* Swipe support (mobile) */
+            let startX = 0;
+            let isDragging = false;
+
+            slider.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+                clearInterval(auto);
+            }, { passive: true });
+
+            slider.addEventListener('touchend', (e) => {
+                if (!isDragging) return;
+                const diff = e.changedTouches[0].clientX - startX;
+                if (Math.abs(diff) > 40) {
+                    diff > 0 ? goTo(index - 1) : goTo(index + 1);
+                }
+                isDragging = false;
+                auto = setInterval(() => goTo(index + 1), 6000);
+            }, { passive: true });
+
+            /* Keyboard support */
+            slider.setAttribute('tabindex', '0');
+            slider.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') goTo(index + 1);
+                if (e.key === 'ArrowLeft') goTo(index - 1);
+            });
+        })();
     </script>
 
 </body>
