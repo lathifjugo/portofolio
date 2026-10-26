@@ -677,12 +677,40 @@
             top: -2px;
         }
 
-        /* Paragraf di dalam item pengalaman (magang) */
-        .bento-card li p {
+        /* Link pada item pengalaman — tampil seperti teks biasa, dapat diklik */
+        .bento-card li .list-link {
+            color: var(--text-muted);
+            display: block;
+            transition: color 0.25s;
+        }
+
+        .bento-card li .list-link:hover {
+            color: var(--text-main);
+        }
+
+        .bento-card li .list-link:hover strong {
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-color: var(--accent-yellow);
+            text-decoration-thickness: 2px;
+        }
+
+        /* Pastikan strong & p di dalam link tetap rapi */
+        .bento-card li .list-link strong {
+            color: var(--text-main);
+            display: block;
+        }
+
+        .bento-card li .list-link p {
             margin-top: 0.35rem;
             color: var(--text-muted);
             font-size: 0.88rem;
             line-height: 1.65;
+            transition: color 0.25s;
+        }
+
+        .bento-card li .list-link:hover p {
+            color: var(--text-main);
         }
 
         /* ============================================================
@@ -1175,7 +1203,7 @@
                 font-size: 0.82rem;
             }
 
-            .bento-card li p {
+            .bento-card li .list-link p {
                 font-size: 0.8rem;
             }
 
@@ -1457,8 +1485,9 @@
                 <div class="bento-icon-wrapper">💻</div>
                 <h3>Projek Pribadi</h3>
                 <ul>
-                    <li>Aplikasi web admin rental mobil untuk mengelola data penyewaan, pengembalian mobil, dan ketersediaan sopir (PHP + MySQL).</li>
-                    <li>Aplikasi website pengelolaan stok keluar masuk barang yang dikonfirmasi admin (PHP + MySQL).</li>
+                    <li>
+                        <a href="projek-rental-mobil.html" class="list-link">Aplikasi web admin rental mobil untuk mengelola data penyewaan, pengembalian mobil, dan ketersediaan sopir (PHP + MySQL).</a>
+                    </li>
                 </ul>
             </div>
 
@@ -1466,8 +1495,12 @@
                 <div class="bento-icon-wrapper">💼</div>
                 <h3>Tugas Kuliah</h3>
                 <ul>
-                    <li>Sistem pakar diagnosis kerusakan Air Conditioner menggunakan metode Forward Chaining (PHP + MySQL).</li>
-                    <li>Website profil usaha jasa servis Air Conditioner untuk memudahkan penjadwalan servis pelanggan (PHP + Bootstrap).</li>
+                    <li>
+                        <a href="tugas-sistem-pakar-ac.html" class="list-link">Sistem pakar diagnosis kerusakan Air Conditioner menggunakan metode Forward Chaining (PHP + MySQL).</a>
+                    </li>
+                    <li>
+                        <a href="tugas-website-servis-ac.html" class="list-link">Website profil usaha jasa servis Air Conditioner untuk memudahkan penjadwalan servis pelanggan (PHP + Bootstrap).</a>
+                    </li>
                 </ul>
             </div>
 
@@ -1476,12 +1509,16 @@
                 <h3>Magang</h3>
                 <ul>
                     <li>
-                        <strong>Kementerian Kelautan dan Perikanan (11 Bulan)</strong>
-                        <p>Merapikan dan mengarsip dokumen berdasarkan waktu/tanggal, membantu membuat website kegiatan pelatihan karyawan (WordPress + Google Form), serta membuat sertifikat otomatis via email.</p>
+                        <a href="magang-kkp.html" class="list-link">
+                            <strong>Kementerian Kelautan dan Perikanan (11 Bulan)</strong>
+                            <p>Merapikan dan mengarsip dokumen berdasarkan waktu/tanggal, membantu membuat website kegiatan pelatihan karyawan (WordPress + Google Form), serta membuat sertifikat otomatis via email.</p>
+                        </a>
                     </li>
                     <li>
-                        <strong>PT. Dwi Utama Transportasi Indonesia (3 Bulan)</strong>
-                        <p>Divisi IT Support membantu menyediakan kebutuhan admin seperti penambahan device dan menangani kerusakan komputer/jaringan.</p>
+                        <a href="magang-dwi-utama.html" class="list-link">
+                            <strong>PT. Dwi Utama Transportasi Indonesia (3 Bulan)</strong>
+                            <p>Divisi IT Support membantu menyediakan kebutuhan admin seperti penambahan device dan menangani kerusakan komputer/jaringan.</p>
+                        </a>
                     </li>
                 </ul>
             </div>
