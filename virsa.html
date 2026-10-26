@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Usaha Service AC — Muhammad Lathif</title>
+    <title>Sistem Pakar Motor Matic — Muhammad Lathif</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -668,31 +668,31 @@
     <div class="page-header">
         <a href="index.html#pengalaman" class="back-btn">← Kembali ke Portofolio</a>
         <div class="page-label reveal">Tugas Kuliah</div>
-        <h1 class="page-title reveal">Website Profil Usaha Jasa Service AC</h1>
-        <p class="page-subtitle reveal">Website profil usaha yang menampilkan layanan, galeri, dan informasi kontak untuk usaha jasa service AC.</p>
+        <h1 class="page-title reveal">Sistem Pakar Diagnosis Kerusakan Motor Matic</h1>
+        <p class="page-subtitle reveal">Aplikasi web sistem pakar menggunakan metode Forward Chaining untuk mendiagnosis kerusakan motor matic, dibangun dengan PHP dan MySQL.</p>
     </div>
 
     <div class="activity-list">
 
         <div class="activity-row reveal">
             <div class="activity-text">
-                <span class="activity-role">HTML + CSS + JS</span>
-                <h3>Website Profil Usaha Jasa Service AC</h3>
-                <p>Website profil usaha yang dibangun sebagai tugas kuliah untuk memperkenalkan layanan jasa service AC, menampilkan galeri hasil kerja, serta memudahkan pelanggan menghubungi pemilik usaha.</p>
+                <span class="activity-role">PHP + MySQL</span>
+                <h3>Aplikasi Web Sistem Pakar Forward Chaining</h3>
+                <p>Aplikasi web sistem pakar yang dibangun sebagai tugas kuliah untuk mendiagnosis kerusakan pada motor matic berdasarkan gejala yang dipilih pengguna. Sistem menggunakan metode Forward Chaining dengan basis aturan (rule-based) yang menghubungkan gejala dengan jenis kerusakan.</p>
                 <ul class="activity-details">
-                    <li>Menampilkan layanan service, perawatan, dan pemasangan AC.</li>
-                    <li>Menyediakan galeri hasil kerja dan informasi kontak.</li>
-                    <li>Desain responsif untuk desktop dan smartphone.</li>
+                    <li>Menerapkan metode Forward Chaining untuk penelusuran gejala menuju kesimpulan kerusakan.</li>
+                    <li>Mengelola basis pengetahuan gejala, kerusakan, dan aturan (rule) di database MySQL.</li>
+                    <li>Menampilkan hasil diagnosis beserta solusi penanganan kerusakan motor matic.</li>
                 </ul>
             </div>
 
-            <div class="activity-slider" id="acSlider">
+            <div class="activity-slider" id="pakarSlider">
                 <div class="slider-track">
                     <div class="slide" data-index="0">
-                        <img src="service-ac-1.png" alt="Website Profil Usaha Service AC">
+                        <img src="sistem-pakar-motor-1.png" alt="Aplikasi Sistem Pakar Motor Matic">
                     </div>
                     <div class="slide" data-index="1">
-                        <img src="service-ac-2.jpeg" alt="Dokumentasi Website Service AC">
+                        <img src="sistem-pakar-motor-2.jpeg" alt="Dokumentasi Sistem Pakar Motor Matic">
                     </div>
                 </div>
 
@@ -740,7 +740,7 @@
         });
 
         (function () {
-            const slider = document.getElementById('acSlider');
+            const slider = document.getElementById('pakarSlider');
             if (!slider) return;
 
             const track = slider.querySelector('.slider-track');
@@ -808,7 +808,7 @@
         const lightboxNext = document.getElementById('lightboxNext');
 
         const galleryImages = Array.from(
-            document.querySelectorAll('#acSlider .slide img')
+            document.querySelectorAll('#pakarSlider .slide img')
         ).map(img => ({ src: img.getAttribute('src'), alt: img.alt }));
 
         let lightboxIndex = 0;
