@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projek Rental Mobil — Muhammad Lathif</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ====== (SALIN SELURUH CSS DARI kegiatan-mdj-mengajar.html) ====== */
+    </style>
+</head>
+<body>
+
+    <div class="blob-shape blob-1"></div>
+    <div class="blob-shape blob-2"></div>
+
+    <nav>
+        <div class="nav-top">
+            <div class="logo"><span></span>Muhammad Lathif</div>
+            <div class="nav-links">
+                <a href="index.html#tentang">Tentang</a>
+                <a href="index.html#pendidikan">Pendidikan</a>
+                <a href="index.html#pengalaman" class="active">Pengalaman</a>
+                <a href="index.html#organisasi">Organisasi</a>
+                <a href="index.html#kemampuan">Kemampuan</a>
+            </div>
+        </div>
+        <button class="nav-btn">Kontak Saya</button>
+    </nav>
+
+    <div class="page-header">
+        <a href="index.html#pengalaman" class="back-btn">← Kembali ke Portofolio</a>
+        <div class="page-label reveal">Projek Pribadi</div>
+        <h1 class="page-title reveal">Aplikasi Web Admin Rental Mobil</h1>
+        <p class="page-subtitle reveal">Aplikasi berbasis web untuk mengelola data penyewaan, pengembalian mobil, dan ketersediaan sopir.</p>
+    </div>
+
+    <div class="activity-list">
+        <div class="activity-row reveal">
+            <div class="activity-text">
+                <span class="activity-role">PHP + MySQL</span>
+                <h3>Sistem Admin Rental Mobil</h3>
+                <p>Aplikasi web admin rental mobil yang dibangun untuk mengelola data penyewaan, pengembalian mobil, serta ketersediaan sopir secara terpusat.</p>
+                <ul class="activity-details">
+                    <li>Mengelola data penyewaan dan pengembalian mobil.</li>
+                    <li>Mencatat ketersediaan sopir dan armada.</li>
+                    <li>Menyimpan riwayat transaksi penyewaan.</li>
+                </ul>
+            </div>
+            <div class="activity-photo">
+                <img src="projek-rental-mobil.jpg" alt="Aplikasi Rental Mobil">
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-brand">Muhammad Lathif</div>
+        <p>&copy; 2026 Muhammad Lathif — Portofolio Lamaran Kerja</p>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => entry.target.classList.add('visible'), 100);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        document.querySelectorAll('.activity-list .activity-row').forEach((el, i) => {
+            el.style.transitionDelay = `${i * 0.12}s`;
+        });
+    </script>
+
+</body>
+</html>
