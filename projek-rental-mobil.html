@@ -237,15 +237,35 @@
             font-size: 1.4rem; line-height: 1; top: -2px;
         }
 
+        /* ============================================================
+           PHOTO GALLERY (2 FOTO BERDAMPINGAN)
+           ============================================================ */
+        .activity-photos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            align-items: stretch;
+        }
+
         .activity-photo {
             position: relative;
-            border-radius: 22px;
+            border-radius: 18px;
             overflow: hidden;
             aspect-ratio: 4 / 3;
+            background: var(--border);
             box-shadow:
-                0 10px 25px rgba(0, 0, 0, 0.08),
-                0 0 0 5px rgba(255, 255, 255, 0.9),
-                0 0 0 7px rgba(255, 214, 0, 0.3);
+                0 8px 20px rgba(0, 0, 0, 0.08),
+                0 0 0 4px rgba(255, 255, 255, 0.9),
+                0 0 0 6px rgba(255, 214, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .activity-photo:hover {
+            transform: translateY(-4px);
+            box-shadow:
+                0 14px 28px rgba(0, 0, 0, 0.12),
+                0 0 0 4px rgba(255, 255, 255, 0.9),
+                0 0 0 6px rgba(255, 214, 0, 0.5);
         }
 
         .activity-photo img {
@@ -255,8 +275,8 @@
             transition: transform 0.5s ease;
         }
 
-        .activity-row:hover .activity-photo img {
-            transform: scale(1.05);
+        .activity-photo:hover img {
+            transform: scale(1.06);
         }
 
         /* ============================================================
@@ -318,7 +338,13 @@
                 gap: 2rem;
                 padding: 2rem;
             }
-            .activity-photo { order: -1; }
+            .activity-photos { order: -1; }
+        }
+
+        @media (max-width: 600px) {
+            .activity-photos {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 768px) {
@@ -377,11 +403,13 @@
                     <li>Menyimpan riwayat transaksi penyewaan.</li>
                 </ul>
             </div>
-            <div class="activity-photo">
-                <img src="Dutrans Rental.png" alt="Aplikasi Rental Mobil">
-            </div>
-            <div class="activity-photo">
-            <img src="dutrans.jpeg" alt="Aplikasi Rental Mobil">
+            <div class="activity-photos">
+                <div class="activity-photo">
+                    <img src="Dutrans Rental.png" alt="Aplikasi Rental Mobil">
+                </div>
+                <div class="activity-photo">
+                    <img src="dutrans.jpeg" alt="Dokumentasi Rental Mobil">
+                </div>
             </div>
         </div>
 
