@@ -273,6 +273,36 @@
             display: block;
         }
 
+        /* Zoom hint overlay */
+        .slide {
+            position: relative;
+            cursor: zoom-in;
+        }
+
+        .slide::after {
+            content: '⤢';
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.45);
+            color: #fff;
+            font-size: 1rem;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+        }
+
+        .slide:hover::after {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
         /* Tombol Navigasi */
         .slider-btn {
             position: absolute;
@@ -336,10 +366,133 @@
             background: var(--accent-yellow);
             width: 22px;
             border-radius: 20px;
-            transform: scale(1);
         }
 
         .dot:hover { background: var(--accent-yellow); }
+
+        /* ============================================================
+           LIGHTBOX
+           ============================================================ */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: rgba(10, 10, 10, 0.94);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+            padding: 2rem;
+        }
+
+        .lightbox.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 88vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: scale(0.92);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .lightbox.open .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lightbox-img {
+            max-width: 90vw;
+            max-height: 88vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 14px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .lightbox-close {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 300;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.25s, transform 0.25s;
+            z-index: 10;
+        }
+
+        .lightbox-close:hover {
+            background: var(--accent-yellow);
+            color: var(--text-main);
+            transform: rotate(90deg);
+        }
+
+        .lightbox-nav {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            font-size: 1.6rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.25s, transform 0.25s;
+            z-index: 10;
+        }
+
+        .lightbox-nav:hover {
+            background: var(--accent-yellow);
+            color: var(--text-main);
+            transform: translateY(-50%) scale(1.08);
+        }
+
+        .lightbox-nav.prev { left: 24px; }
+        .lightbox-nav.next { right: 24px; }
+
+        .lightbox-counter {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 18px;
+            border-radius: 50px;
+        }
+
+        /* Body no-scroll saat lightbox terbuka */
+        body.lightbox-active {
+            overflow: hidden;
+        }
 
         /* ============================================================
            FOOTER
@@ -409,6 +562,12 @@
             .page-header, .activity-list { padding-left: 1.5rem; padding-right: 1.5rem; }
 
             .slider-btn { opacity: 1; width: 36px; height: 36px; font-size: 1rem; }
+
+            .lightbox-close { top: 14px; right: 14px; width: 42px; height: 42px; font-size: 1.3rem; }
+            .lightbox-nav { width: 44px; height: 44px; font-size: 1.3rem; }
+            .lightbox-nav.prev { left: 10px; }
+            .lightbox-nav.next { right: 10px; }
+            .lightbox-img { border-radius: 8px; }
         }
     </style>
 </head>
@@ -465,10 +624,10 @@
             <!-- SLIDER FOTO -->
             <div class="activity-slider" id="rentalSlider">
                 <div class="slider-track">
-                    <div class="slide">
+                    <div class="slide" data-index="0">
                         <img src="Dutrans Rental.png" alt="Aplikasi Rental Mobil">
                     </div>
-                    <div class="slide">
+                    <div class="slide" data-index="1">
                         <img src="dutrans.jpeg" alt="Dokumentasi Rental Mobil">
                     </div>
                 </div>
@@ -492,6 +651,19 @@
         <div class="footer-brand">Muhammad Lathif</div>
         <p>&copy; 2026 Muhammad Lathif — Portofolio Lamaran Kerja</p>
     </footer>
+
+    <!-- ============================================================
+         LIGHTBOX
+         ============================================================ -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Tampilan foto detail">
+        <button class="lightbox-close" id="lightboxClose" aria-label="Tutup">×</button>
+        <button class="lightbox-nav prev" id="lightboxPrev" aria-label="Foto sebelumnya">‹</button>
+        <button class="lightbox-nav next" id="lightboxNext" aria-label="Foto berikutnya">›</button>
+        <div class="lightbox-content">
+            <img class="lightbox-img" id="lightboxImg" src="" alt="Foto detail">
+        </div>
+        <div class="lightbox-counter" id="lightboxCounter">1 / 2</div>
+    </div>
 
     <!-- ============================================================
          SCRIPTS
@@ -526,24 +698,24 @@
             const total = slides.length;
             let index = 0;
 
-            function goTo(i) {
+            window.sliderGoTo = function (i) {
                 index = (i + total) % total;
                 track.style.transform = `translateX(-${index * 100}%)`;
                 dots.forEach((d, k) => d.classList.toggle('active', k === index));
-            }
+            };
 
-            nextBtn.addEventListener('click', () => goTo(index + 1));
-            prevBtn.addEventListener('click', () => goTo(index - 1));
-            dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+            nextBtn.addEventListener('click', () => window.sliderGoTo(index + 1));
+            prevBtn.addEventListener('click', () => window.sliderGoTo(index - 1));
+            dots.forEach((dot, i) => dot.addEventListener('click', () => window.sliderGoTo(i)));
 
-            /* Auto slide (opsional, hapus jika tidak perlu) */
-            let auto = setInterval(() => goTo(index + 1), 6000);
+            /* Auto slide */
+            let auto = setInterval(() => window.sliderGoTo(index + 1), 6000);
             slider.addEventListener('mouseenter', () => clearInterval(auto));
             slider.addEventListener('mouseleave', () => {
-                auto = setInterval(() => goTo(index + 1), 6000);
+                auto = setInterval(() => window.sliderGoTo(index + 1), 6000);
             });
 
-            /* Swipe support (mobile) */
+            /* Swipe support */
             let startX = 0;
             let isDragging = false;
 
@@ -557,19 +729,84 @@
                 if (!isDragging) return;
                 const diff = e.changedTouches[0].clientX - startX;
                 if (Math.abs(diff) > 40) {
-                    diff > 0 ? goTo(index - 1) : goTo(index + 1);
+                    diff > 0 ? window.sliderGoTo(index - 1) : window.sliderGoTo(index + 1);
                 }
                 isDragging = false;
-                auto = setInterval(() => goTo(index + 1), 6000);
+                auto = setInterval(() => window.sliderGoTo(index + 1), 6000);
             }, { passive: true });
 
             /* Keyboard support */
             slider.setAttribute('tabindex', '0');
             slider.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowRight') goTo(index + 1);
-                if (e.key === 'ArrowLeft') goTo(index - 1);
+                if (e.key === 'ArrowRight') window.sliderGoTo(index + 1);
+                if (e.key === 'ArrowLeft') window.sliderGoTo(index - 1);
+            });
+
+            /* Klik slide → buka lightbox */
+            slides.forEach((slide) => {
+                slide.addEventListener('click', () => {
+                    const i = parseInt(slide.dataset.index, 10) || 0;
+                    openLightbox(i);
+                });
             });
         })();
+
+        /* ---------- Lightbox ---------- */
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxCounter = document.getElementById('lightboxCounter');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const lightboxPrev = document.getElementById('lightboxPrev');
+        const lightboxNext = document.getElementById('lightboxNext');
+
+        // Kumpulkan gambar dari slide
+        const galleryImages = Array.from(
+            document.querySelectorAll('#rentalSlider .slide img')
+        ).map(img => ({ src: img.getAttribute('src'), alt: img.alt }));
+
+        let lightboxIndex = 0;
+
+        function renderLightbox() {
+            const item = galleryImages[lightboxIndex];
+            if (!item) return;
+            lightboxImg.src = item.src;
+            lightboxImg.alt = item.alt;
+            lightboxCounter.textContent = `${lightboxIndex + 1} / ${galleryImages.length}`;
+        }
+
+        function openLightbox(i) {
+            lightboxIndex = i;
+            renderLightbox();
+            lightbox.classList.add('open');
+            document.body.classList.add('lightbox-active');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('open');
+            document.body.classList.remove('lightbox-active');
+        }
+
+        function lightboxGoTo(step) {
+            lightboxIndex = (lightboxIndex + step + galleryImages.length) % galleryImages.length;
+            renderLightbox();
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxPrev.addEventListener('click', () => lightboxGoTo(-1));
+        lightboxNext.addEventListener('click', () => lightboxGoTo(1));
+
+        // Klik area gelap untuk menutup
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        // Tombol keyboard global saat lightbox terbuka
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('open')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') lightboxGoTo(1);
+            if (e.key === 'ArrowLeft') lightboxGoTo(-1);
+        });
     </script>
 
 </body>
