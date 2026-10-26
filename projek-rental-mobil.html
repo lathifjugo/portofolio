@@ -8,14 +8,335 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* ====== (SALIN SELURUH CSS DARI kegiatan-mdj-mengajar.html) ====== */
+        /* ============================================================
+           RESET & VARIABLES
+           ============================================================ */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #FAFAFA;
+            --surface: #FFFFFF;
+            --text-main: #1A1A1A;
+            --text-muted: #666666;
+            --accent-yellow: #FFD600;
+            --accent-yellow-light: #FFF8C4;
+            --accent-dark: #111111;
+            --border: #EAEAEA;
+            --nav-width: 220px;
+            --content-max: 1180px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            padding-right: var(--nav-width);
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* ============================================================
+           BLOB SHAPES
+           ============================================================ */
+        .blob-shape { position: absolute; z-index: -1; opacity: 0.9; }
+
+        .blob-1 {
+            top: -10%; right: -5%;
+            width: 600px; height: 600px;
+            background: var(--accent-yellow);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            animation: morph 8s ease-in-out infinite;
+        }
+
+        .blob-2 {
+            bottom: 10%; left: -10%;
+            width: 400px; height: 400px;
+            background: var(--accent-yellow-light);
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            animation: morph 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes morph {
+            0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: rotate(0deg); }
+            100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: rotate(10deg); }
+        }
+
+        /* ============================================================
+           NAVBAR KANAN
+           ============================================================ */
+        nav {
+            position: fixed; top: 0; right: 0;
+            width: var(--nav-width); height: 100vh;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(15px);
+            border-left: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            display: flex; flex-direction: column; justify-content: space-between;
+            z-index: 9999;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.04);
+        }
+
+        .nav-top { display: flex; flex-direction: column; gap: 2.5rem; }
+
+        .logo {
+            font-size: 1.4rem; font-weight: 800; color: var(--text-main);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .logo span {
+            width: 12px; height: 12px;
+            background: var(--accent-yellow); border-radius: 50%;
+            display: inline-block;
+        }
+
+        .nav-links { display: flex; flex-direction: column; gap: 0.4rem; }
+
+        .nav-links a {
+            font-size: 0.9rem; font-weight: 600; color: var(--text-muted);
+            padding: 0.6rem 0.8rem; border-radius: 12px;
+            transition: background 0.25s, color 0.25s;
+        }
+        .nav-links a:hover { color: var(--text-main); background: var(--accent-yellow-light); }
+        .nav-links a.active { color: var(--text-main); background: var(--accent-yellow); }
+
+        .nav-btn {
+            background: var(--accent-dark); color: white;
+            padding: 12px 20px; border-radius: 50px;
+            font-size: 0.85rem; font-weight: 600;
+            border: none; cursor: pointer; width: 100%;
+            transition: background 0.3s, transform 0.3s;
+        }
+        .nav-btn:hover { background: #000; transform: translateY(-2px); }
+
+        /* ============================================================
+           PAGE HEADER
+           ============================================================ */
+        .page-header {
+            max-width: var(--content-max);
+            margin: 0 auto;
+            padding: 80px 3rem 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--accent-yellow); color: var(--text-main);
+            padding: 11px 24px; border-radius: 50px;
+            font-size: 0.85rem; font-weight: 700;
+            box-shadow: 0 4px 15px rgba(255, 214, 0, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 2rem;
+        }
+        .back-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255, 214, 0, 0.6); }
+
+        .page-label {
+            display: inline-block;
+            font-size: 0.8rem; font-weight: 700;
+            letter-spacing: 1px; text-transform: uppercase;
+            color: var(--accent-yellow);
+            background: rgba(255, 214, 0, 0.1);
+            padding: 5px 15px; border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+
+        .page-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800; line-height: 1.15;
+            color: var(--text-main);
+            margin-bottom: 0.75rem;
+        }
+
+        .page-subtitle {
+            font-size: 0.95rem; color: var(--text-muted);
+            max-width: 640px;
+        }
+
+        /* ============================================================
+           ACTIVITY ROWS (Kiri Penjelasan, Kanan Foto)
+           ============================================================ */
+        .activity-list {
+            max-width: var(--content-max);
+            margin: 0 auto;
+            padding: 20px 3rem 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .activity-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .activity-row:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.07);
+        }
+
+        .activity-text h3 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 0.4rem;
+        }
+
+        .activity-role {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--text-main);
+            background: var(--accent-yellow);
+            padding: 4px 12px;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .activity-text p {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .activity-details {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .activity-details li {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            line-height: 1.6;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+
+        .activity-details li::before {
+            content: '•';
+            position: absolute; left: 0;
+            color: var(--accent-yellow);
+            font-size: 1.4rem; line-height: 1; top: -2px;
+        }
+
+        .activity-photo {
+            position: relative;
+            border-radius: 22px;
+            overflow: hidden;
+            aspect-ratio: 4 / 3;
+            box-shadow:
+                0 10px 25px rgba(0, 0, 0, 0.08),
+                0 0 0 5px rgba(255, 255, 255, 0.9),
+                0 0 0 7px rgba(255, 214, 0, 0.3);
+        }
+
+        .activity-photo img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .activity-row:hover .activity-photo img {
+            transform: scale(1.05);
+        }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        footer {
+            background: var(--accent-dark);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: 50px 50px 0 0;
+        }
+
+        footer .footer-brand {
+            font-size: 1.6rem; font-weight: 800;
+            color: var(--accent-yellow);
+            margin-bottom: 0.5rem;
+        }
+
+        footer p { color: #888; font-size: 0.85rem; }
+
+        /* ============================================================
+           SCROLL ANIMATIONS
+           ============================================================ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 1100px) {
+            body { padding-right: 0; }
+
+            nav {
+                position: fixed; top: 20px; right: auto; left: 50%;
+                transform: translateX(-50%);
+                width: calc(100% - 4rem); height: auto;
+                flex-direction: row; align-items: center; justify-content: space-between;
+                border-left: none; border: 1px solid var(--border);
+                border-radius: 100px; padding: 0.8rem 2rem;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            }
+
+            .nav-top { flex-direction: row; align-items: center; gap: 1.5rem; width: 100%; }
+            .nav-links { flex-direction: row; gap: 1.25rem; flex-wrap: wrap; }
+            .nav-links a { padding: 0; border-radius: 0; background: transparent !important; font-size: 0.8rem; }
+            .nav-btn { width: auto; padding: 8px 20px; }
+
+            .page-header { padding-top: 130px; }
+        }
+
+        @media (max-width: 900px) {
+            .activity-row {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 2rem;
+            }
+            .activity-photo { order: -1; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-btn { padding: 8px 16px; font-size: 0.75rem; }
+            .page-header, .activity-list { padding-left: 1.5rem; padding-right: 1.5rem; }
+        }
     </style>
 </head>
 <body>
 
+    <!-- BLOB BACKGROUNDS -->
     <div class="blob-shape blob-1"></div>
     <div class="blob-shape blob-2"></div>
 
+    <!-- ============================================================
+         NAVBAR KANAN
+         ============================================================ -->
     <nav>
         <div class="nav-top">
             <div class="logo"><span></span>Muhammad Lathif</div>
@@ -30,6 +351,9 @@
         <button class="nav-btn">Kontak Saya</button>
     </nav>
 
+    <!-- ============================================================
+         PAGE HEADER
+         ============================================================ -->
     <div class="page-header">
         <a href="index.html#pengalaman" class="back-btn">← Kembali ke Portofolio</a>
         <div class="page-label reveal">Projek Pribadi</div>
@@ -37,7 +361,11 @@
         <p class="page-subtitle reveal">Aplikasi berbasis web untuk mengelola data penyewaan, pengembalian mobil, dan ketersediaan sopir.</p>
     </div>
 
+    <!-- ============================================================
+         ACTIVITY LIST
+         ============================================================ -->
     <div class="activity-list">
+
         <div class="activity-row reveal">
             <div class="activity-text">
                 <span class="activity-role">PHP + MySQL</span>
@@ -53,13 +381,20 @@
                 <img src="projek-rental-mobil.jpg" alt="Aplikasi Rental Mobil">
             </div>
         </div>
+
     </div>
 
+    <!-- ============================================================
+         FOOTER
+         ============================================================ -->
     <footer>
         <div class="footer-brand">Muhammad Lathif</div>
         <p>&copy; 2026 Muhammad Lathif — Portofolio Lamaran Kerja</p>
     </footer>
 
+    <!-- ============================================================
+         SCRIPTS
+         ============================================================ -->
     <script>
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
@@ -69,7 +404,9 @@
                 }
             });
         }, { threshold: 0.1 });
+
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
         document.querySelectorAll('.activity-list .activity-row').forEach((el, i) => {
             el.style.transitionDelay = `${i * 0.12}s`;
         });
