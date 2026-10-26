@@ -161,6 +161,7 @@
             z-index: 9999;
             box-shadow: -10px 0 30px rgba(0,0,0,0.04);
             transition: transform 0.35s ease;
+            overflow-y: auto;
         }
 
         .nav-top {
@@ -209,22 +210,64 @@
             background: var(--accent-yellow);
         }
 
-        .nav-btn {
+        /* Blok kontak di bagian bawah navbar */
+        .nav-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Judul "Kontak Saya" — gaya visual seperti tombol, tapi bukan <button> */
+        .contact-title {
             background: var(--accent-dark);
             color: white;
             padding: 12px 20px;
             border-radius: 50px;
             font-size: 0.85rem;
             font-weight: 600;
-            border: none;
-            cursor: pointer;
+            text-align: center;
             width: 100%;
-            transition: background 0.3s, transform 0.3s;
+            letter-spacing: 0.3px;
         }
 
-        .nav-btn:hover {
-            background: #000;
-            transform: translateY(-2px);
+        /* Daftar informasi kontak */
+        .contact-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .contact-list li {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+            word-break: break-word;
+        }
+
+        .contact-list li strong {
+            display: block;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1px;
+        }
+
+        .contact-list a {
+            color: var(--text-muted);
+            transition: color 0.25s;
+        }
+
+        .contact-list a:hover {
+            color: var(--text-main);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            text-decoration-color: var(--accent-yellow);
+            text-decoration-thickness: 2px;
         }
 
         /* ============================================================
@@ -627,6 +670,14 @@
             top: -2px;
         }
 
+        /* Paragraf di dalam item pengalaman (magang) */
+        .bento-card li p {
+            margin-top: 0.35rem;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            line-height: 1.65;
+        }
+
         /* ============================================================
            ORGANISASI & PENCAPAIAN
            ============================================================ */
@@ -897,9 +948,17 @@
                 padding: 0.5rem 0.6rem;
             }
 
-            .nav-btn {
+            .contact-title {
                 padding: 10px 14px;
                 font-size: 0.78rem;
+            }
+
+            .contact-list li {
+                font-size: 0.7rem;
+            }
+
+            .contact-list li strong {
+                font-size: 0.65rem;
             }
 
             .hero {
@@ -975,9 +1034,17 @@
                 padding: 0.6rem 0.7rem;
             }
 
-            .nav-btn {
+            .contact-title {
                 padding: 10px 14px;
                 font-size: 0.78rem;
+            }
+
+            .contact-list li {
+                font-size: 0.7rem;
+            }
+
+            .contact-list li strong {
+                font-size: 0.65rem;
             }
 
             /* HERO */
@@ -1099,6 +1166,10 @@
 
             .bento-card li {
                 font-size: 0.82rem;
+            }
+
+            .bento-card li p {
+                font-size: 0.8rem;
             }
 
             /* ORGANISASI */
@@ -1251,12 +1322,25 @@
                 <a href="#kemampuan" class="nav-link">Kemampuan</a>
             </div>
         </div>
-        <button class="nav-btn">Kontak Saya</button>
-        <ul>
-            <li> Instagram : latif.mtr </li>
-            <li> Whatsapp  : 081212956094 </li>
-            <li> Email     : muhammadlathif291002@gmail.com </li>
-        </ul>
+
+        <!-- Blok kontak: judul bergaya visual sama, bukan <button> -->
+        <div class="nav-contact">
+            <div class="contact-title">Kontak Saya</div>
+            <ul class="contact-list">
+                <li>
+                    <strong>Instagram</strong>
+                    <a href="https://instagram.com/latif.mtr" target="_blank" rel="noopener">latif.mtr</a>
+                </li>
+                <li>
+                    <strong>WhatsApp</strong>
+                    <a href="https://wa.me/6281212956094" target="_blank" rel="noopener">081212956094</a>
+                </li>
+                <li>
+                    <strong>Email</strong>
+                    <a href="mailto:muhammadlathif291002@gmail.com">muhammadlathif291002@gmail.com</a>
+                </li>
+            </ul>
+        </div>
     </nav>
 
     <!-- ============================================================
@@ -1384,10 +1468,14 @@
                 <div class="bento-icon-wrapper">🏢</div>
                 <h3>Magang</h3>
                 <ul>
-                    <li><strong>Kementerian Kelautan dan Perikanan (11 Bulan) </strong> 
-                    <p>Merapikan dan mengarsip dokumen berdasarkan waktu/tanggal, membantu membuat website kegiatan pelatihan karyawan (WordPress + Google Form), serta membuat sertifikat otomatis via email.</p></li>
-                    <li><strong>PT. Dwi Utama Transportasi Indonesia (3 Bulan) </strong> 
-                    <p>Divisi IT Support membantu menyediakan kebutuhan admin seperti penambahan device dan menangani kerusakan komputer/jaringan. </p> </li>
+                    <li>
+                        <strong>Kementerian Kelautan dan Perikanan (11 Bulan)</strong>
+                        <p>Merapikan dan mengarsip dokumen berdasarkan waktu/tanggal, membantu membuat website kegiatan pelatihan karyawan (WordPress + Google Form), serta membuat sertifikat otomatis via email.</p>
+                    </li>
+                    <li>
+                        <strong>PT. Dwi Utama Transportasi Indonesia (3 Bulan)</strong>
+                        <p>Divisi IT Support membantu menyediakan kebutuhan admin seperti penambahan device dan menangani kerusakan komputer/jaringan.</p>
+                    </li>
                 </ul>
             </div>
         </div>
