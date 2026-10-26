@@ -26,9 +26,9 @@
             --accent-yellow-light: #FFF8C4;
             --accent-dark: #111111;
             --border: #EAEAEA;
-            --nav-width: 220px;
-            --nav-width-mobile: 200px;
-            --content-max: 1180px;
+            --nav-width: 220px;          /* lebar navbar kanan (desktop) */
+            --nav-width-mobile: 200px;   /* lebar navbar kanan (mobile) */
+            --content-max: 1180px;       /* max-width konten untuk laptop/komputer */
         }
 
         html {
@@ -42,6 +42,7 @@
             line-height: 1.7;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            /* ruang di kanan agar konten tidak tertutup navbar kanan (desktop) */
             padding-right: var(--nav-width);
             transition: padding-right 0.35s ease;
         }
@@ -86,7 +87,7 @@
            TOMBOL HAMBURGER (hanya tampil di mobile)
            ============================================================ */
         .nav-toggle {
-            display: none;
+            display: none; /* default: tidak tampil di desktop */
             position: fixed;
             top: 14px;
             right: 14px;
@@ -114,6 +115,7 @@
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
 
+        /* State aktif (menu terbuka) -> membentuk ikon X */
         .nav-toggle.active span:nth-child(1) {
             transform: translateY(7px) rotate(45deg);
         }
@@ -124,6 +126,7 @@
             transform: translateY(-7px) rotate(-45deg);
         }
 
+        /* Overlay gelap saat menu terbuka di mobile */
         .nav-overlay {
             display: none;
             position: fixed;
@@ -139,7 +142,7 @@
         }
 
         /* ============================================================
-           NAVBAR KANAN (Vertical Side Nav)
+           NAVBAR KANAN (Vertical Side Nav) — Selalu Tampil di Desktop
            ============================================================ */
         nav {
             position: fixed;
@@ -281,6 +284,7 @@
             max-width: 95%;
         }
 
+        /* Statistik */
         .hero-stats {
             display: inline-flex;
             gap: 1.5rem;
@@ -353,7 +357,7 @@
         }
 
         /* ============================================================
-           HERO IMAGE
+           HERO IMAGE (Formal dengan Shadow)
            ============================================================ */
         .hero-img-area {
             flex: 1;
@@ -394,6 +398,23 @@
             object-fit: cover;
             object-position: center top;
             display: block;
+        }
+
+        .floating-icon {
+            position: absolute;
+            background: var(--surface);
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            font-size: 1.5rem;
+            animation: float 4s ease-in-out infinite;
+        }
+        .icon-1 { top: 10%; left: -5%; }
+        .icon-2 { bottom: 20%; right: -5%; animation-delay: 2s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
 
         /* ============================================================
@@ -481,6 +502,7 @@
             margin-bottom: 0.25rem;
         }
 
+        /* Pendidikan — Detail Tambahan */
         .edu-meta {
             color: var(--text-muted);
             font-size: 0.85rem;
@@ -522,186 +544,18 @@
             top: -1px;
         }
 
-        /* ============================================================
-           LINK SERTIFIKAT (hyperlink seperti teks biasa, dapat diklik)
-           ============================================================ */
-        .cert-link {
+        /* Link sertifikat — tampil seperti teks daftar biasa, dapat diklik */
+        .edu-list li .cert-link {
             color: var(--text-muted);
-            font-size: 0.85rem;
-            line-height: 1.6;
-            padding-left: 1.1rem;
-            position: relative;
-            display: inline-block;
             transition: color 0.25s;
-            cursor: pointer;
         }
 
-        .cert-link::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: var(--accent-yellow);
-            font-size: 1.2rem;
-            line-height: 1;
-            top: -1px;
-        }
-
-        .cert-link:hover {
+        .edu-list li .cert-link:hover {
             color: var(--text-main);
-        }
-
-        .cert-link .cert-hint {
-            color: var(--accent-yellow);
-            font-weight: 600;
-            margin-left: 3px;
-        }
-
-        /* ============================================================
-           MODAL SERTIFIKAT
-           ============================================================ */
-        .cert-modal {
-            position: fixed;
-            inset: 0;
-            z-index: 10050;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 1.25rem;
-            background: rgba(0, 0, 0, 0.55);
-            backdrop-filter: blur(4px);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .cert-modal.open {
-            display: flex;
-            opacity: 1;
-        }
-
-        .cert-modal-box {
-            background: var(--surface);
-            border-radius: 22px;
-            max-width: 640px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
-            transform: translateY(20px) scale(0.98);
-            transition: transform 0.35s ease;
-        }
-
-        .cert-modal.open .cert-modal-box {
-            transform: translateY(0) scale(1);
-        }
-
-        .cert-modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            background: var(--surface);
-            border-radius: 22px 22px 0 0;
-            z-index: 1;
-        }
-
-        .cert-modal-header h3 {
-            font-size: 1.05rem;
-            font-weight: 800;
-            color: var(--text-main);
-            line-height: 1.3;
-        }
-
-        .cert-close {
-            width: 38px;
-            height: 38px;
-            flex-shrink: 0;
-            border: 1px solid var(--border);
-            background: var(--bg);
-            border-radius: 50%;
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-main);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.25s, transform 0.25s;
-        }
-
-        .cert-close:hover {
-            background: var(--accent-yellow);
-            transform: rotate(90deg);
-        }
-
-        .cert-modal-body {
-            padding: 1.5rem;
-        }
-
-        .cert-photo {
-            width: 100%;
-            border-radius: 16px;
-            overflow: hidden;
-            background: var(--accent-yellow-light);
-            border: 1px solid var(--border);
-            margin-bottom: 1.25rem;
-            aspect-ratio: 4 / 3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .cert-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: block;
-            background: #fff;
-        }
-
-        .cert-description h4 {
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            color: var(--text-main);
-            margin-bottom: 0.5rem;
-        }
-
-        .cert-description p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            line-height: 1.7;
-            margin-bottom: 0.75rem;
-        }
-
-        .cert-description ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-
-        .cert-description li {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            line-height: 1.6;
-            padding-left: 1.1rem;
-            position: relative;
-        }
-
-        .cert-description li::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: var(--accent-yellow);
-            font-size: 1.2rem;
-            line-height: 1;
-            top: -1px;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-color: var(--accent-yellow);
+            text-decoration-thickness: 2px;
         }
 
         /* ============================================================
@@ -791,6 +645,7 @@
             transition: all 0.3s;
             display: flex;
             flex-direction: column;
+            /* Kartu organisasi dapat diklik */
             cursor: pointer;
             position: relative;
         }
@@ -800,6 +655,7 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.08);
         }
 
+        /* Indikator panah di pojok kanan atas kartu */
         .org-card::after {
             content: '→';
             position: absolute;
@@ -852,7 +708,7 @@
             font-weight: 700;
             color: var(--text-main);
             line-height: 1.3;
-            padding-right: 2.5rem;
+            padding-right: 2.5rem; /* ruang agar tidak tertutup ikon panah */
         }
 
         .org-card h3 span {
@@ -1067,16 +923,20 @@
 
         /* ============================================================
            RESPONSIVE — MOBILE (≤ 768px)
+           Navbar kanan jadi drawer (bisa dibuka/ditutup via hamburger)
            ============================================================ */
         @media (max-width: 768px) {
+            /* Konten full width, tidak diberi ruang navbar */
             body {
                 padding-right: 0;
             }
 
+            /* Tampilkan tombol hamburger */
             .nav-toggle {
                 display: flex;
             }
 
+            /* Overlay */
             .nav-overlay {
                 display: block;
                 pointer-events: none;
@@ -1085,13 +945,15 @@
                 pointer-events: auto;
             }
 
+            /* Navbar jadi drawer tersembunyi di kanan */
             nav {
                 width: var(--nav-width-mobile);
-                padding: 4.5rem 1rem 1.25rem;
+                padding: 4.5rem 1rem 1.25rem; /* ruang atas untuk hamburger */
                 transform: translateX(100%);
                 box-shadow: -20px 0 40px rgba(0,0,0,0.15);
             }
 
+            /* Saat aktif: muncul dari kanan */
             nav.open {
                 transform: translateX(0);
             }
@@ -1122,7 +984,7 @@
             .hero {
                 flex-direction: column;
                 text-align: center;
-                padding: 90px 1.25rem 50px;
+                padding: 90px 1.25rem 50px; /* ruang atas untuk hamburger */
                 gap: 2rem;
                 min-height: auto;
             }
@@ -1222,22 +1084,8 @@
             }
 
             .edu-card p,
-            .edu-list li,
-            .cert-link {
+            .edu-list li {
                 font-size: 0.82rem;
-            }
-
-            /* Modal sertifikat */
-            .cert-modal-header {
-                padding: 1rem 1.1rem;
-            }
-
-            .cert-modal-header h3 {
-                font-size: 0.95rem;
-            }
-
-            .cert-modal-body {
-                padding: 1.1rem;
             }
 
             /* PENGALAMAN */
@@ -1491,14 +1339,11 @@
                 </ul>
 
                 <h4 class="edu-subtitle">Sertifikasi / Pelatihan</h4>
-                <!-- Hyperlink seperti teks biasa, dapat diklik untuk membuka modal -->
-                <a
-                    href="#"
-                    class="cert-link"
-                    data-cert-title="Sertifikat Kompetensi Keahlian Teknik Komputer dan Jaringan"
-                    data-cert-img="sertifikat-tkj.jpg"
-                    data-cert-desc="Sertifikat kompetensi keahlian Teknik Komputer dan Jaringan yang diperoleh saat menempuh pendidikan di SMK Negeri 1 Jakarta jurusan Sistem Informasi Jaringan dan Aplikasi (SIJA). Sertifikat ini menjadi bukti penguasaan kompetensi di bidang instalasi, konfigurasi, dan pemeliharaan jaringan komputer."
-                >Sertifikat Kompetensi Keahlian Teknik Komputer dan Jaringan</a>
+                <ul class="edu-list">
+                    <li>
+                        <a href="sertifikat-tkj.html" class="cert-link">Sertifikat Kompetensi Keahlian Teknik Komputer dan Jaringan</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </section>
@@ -1654,32 +1499,6 @@
     </footer>
 
     <!-- ============================================================
-         MODAL SERTIFIKAT
-         ============================================================ -->
-    <div class="cert-modal" id="certModal" role="dialog" aria-modal="true" aria-labelledby="certModalTitle">
-        <div class="cert-modal-box">
-            <div class="cert-modal-header">
-                <h3 id="certModalTitle">Judul Sertifikat</h3>
-                <button type="button" class="cert-close" id="certClose" aria-label="Tutup">✕</button>
-            </div>
-            <div class="cert-modal-body">
-                <div class="cert-photo">
-                    <img id="certImage" src="" alt="Foto sertifikat">
-                </div>
-                <div class="cert-description">
-                    <h4>Penjelasan</h4>
-                    <p id="certDesc"></p>
-                    <ul>
-                        <li>Diterbitkan oleh lembaga/instansi terkait.</li>
-                        <li>Menjadi bukti kompetensi di bidang Teknik Komputer dan Jaringan.</li>
-                        <li>Diperoleh selama menempuh pendidikan di SMK Negeri 1 Jakarta.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================================
          SCRIPTS
          ============================================================ -->
     <script>
@@ -1730,7 +1549,7 @@
             navToggle.classList.add('active');
             navToggle.setAttribute('aria-expanded', 'true');
             navToggle.setAttribute('aria-label', 'Tutup menu');
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden'; // cegah scroll latar
         }
 
         function closeMenu() {
@@ -1750,63 +1569,27 @@
             }
         });
 
+        // Tutup menu saat overlay diklik
         navOverlay.addEventListener('click', closeMenu);
 
+        // Tutup menu saat salah satu link navbar diklik
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', () => {
                 if (window.innerWidth <= 768) closeMenu();
             });
         });
 
+        // Tutup menu dengan tombol Escape
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && navbar.classList.contains('open')) {
                 closeMenu();
             }
         });
 
+        // Reset state jika layar diperbesar ke desktop
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768) {
                 closeMenu();
-            }
-        });
-
-        /* ---------- Modal Sertifikat ---------- */
-        const certModal = document.getElementById('certModal');
-        const certTitle = document.getElementById('certModalTitle');
-        const certImage = document.getElementById('certImage');
-        const certDesc  = document.getElementById('certDesc');
-        const certClose = document.getElementById('certClose');
-
-        function openCertModal(link) {
-            certTitle.textContent = link.dataset.certTitle || 'Sertifikat';
-            certImage.src = link.dataset.certImg || '';
-            certImage.alt = link.dataset.certTitle || 'Foto sertifikat';
-            certDesc.textContent = link.dataset.certDesc || '';
-            certModal.classList.add('open');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeCertModal() {
-            certModal.classList.remove('open');
-            document.body.style.overflow = '';
-        }
-
-        document.querySelectorAll('.cert-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault(); // cegah navigasi karena href="#"
-                openCertModal(link);
-            });
-        });
-
-        certClose.addEventListener('click', closeCertModal);
-
-        certModal.addEventListener('click', (e) => {
-            if (e.target === certModal) closeCertModal();
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && certModal.classList.contains('open')) {
-                closeCertModal();
             }
         });
     </script>
