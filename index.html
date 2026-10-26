@@ -306,9 +306,16 @@
             margin-bottom: 1rem;
         }
 
+        /* Tulisan "Lathif" — kuning dengan garis tepi hitam */
         .hero-text h1 span {
             color: var(--accent-yellow);
-            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            -webkit-text-stroke: 1.5px var(--text-main);
+            /* Fallback garis tepi via text-shadow multi-arah */
+            text-shadow:
+                -1.5px -1.5px 0 var(--text-main),
+                 1.5px -1.5px 0 var(--text-main),
+                -1.5px  1.5px 0 var(--text-main),
+                 1.5px  1.5px 0 var(--text-main);
         }
 
         .hero-text h2 {
